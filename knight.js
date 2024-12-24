@@ -65,20 +65,49 @@ function knightMoves(start, end) {
     depth += 1;
   }
 
-  let allMoves = [start, end];
   let depthStore = depth;
+  let allMoves = [];
 
   while (depth > 1) {
-    const inbetweenMoves = inbetweenMove(start, end, depth);
-    allMoves.splice(1, 0, inbetweenMoves[0]);
+    let newMoves = [];
+
+    if (!allMoves.length) {
+      const inbetweenMoves = inbetweenMove(start, end, depth);
+
+      inbetweenMoves.forEach((move) => {
+        newMoves.splice(0, 0, [start, move, end]);
+      });
+      depth--;
+      allMoves = newMoves;
+      continue;
+    }
+
+    allMoves.forEach((move, index) => {
+      let end = move[1];
+      const inbetweenMoves = inbetweenMove(start, end, depth);
+
+      inbetweenMoves.forEach((move) => {
+        let currentMove = allMoves[index].slice();
+        currentMove.splice(1, 0, move);
+        newMoves.push(currentMove);
+      });
+    });
+
+    allMoves = newMoves;
     depth--;
-    end = inbetweenMoves[0];
   }
 
-  console.log(`=> You made it in ${depthStore} moves! Here's your path:`);
-  allMoves.forEach((move) => {
-    console.log(move);
-  });
+  if (!allMoves.length) {
+    console.log(`You made it in 1 move! Here's your path:`);
+    console.log([start, end]);
+  } else {
+    console.log(
+      `You made it in ${depthStore} moves! There are ${allMoves.length} paths with that number of moves:`
+    );
+    allMoves.forEach((path) => {
+      console.log(path);
+    });
+  }
 }
 
-knightMoves([0, 0], [3, 3]);
+knightMoves([3, 3], [4, 3]);

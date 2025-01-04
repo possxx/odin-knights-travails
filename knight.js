@@ -25,6 +25,7 @@ function possibleMoves(position) {
 
 function knightMoves(start, end) {
   const queue = [[start]];
+  const allPaths = [];
   const visitedSqu = new Set();
 
   while (queue.length) {
@@ -34,8 +35,7 @@ function knightMoves(start, end) {
       path[path.length - 1][0] === end[0] &&
       path[path.length - 1][1] === end[1]
     ) {
-      console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
-      console.log(path);
+      allPaths.push(path);
       break;
     }
 
@@ -46,5 +46,10 @@ function knightMoves(start, end) {
       }
     }
   }
-  console.log(visitedSqu);
+
+  console.log("hello");
+  console.log(
+    `There are ${allPaths.length} possible paths with ${allPaths[0].length} moves! Here are the paths:`
+  );
+  allPaths.forEach((path) => console.log(path));
 }

@@ -29,24 +29,22 @@ function knightMoves(start, end) {
 
   while (queue.length) {
     const path = queue.shift();
-    const currDepth = path.length - 1;
 
     if (
       path[path.length - 1][0] === end[0] &&
       path[path.length - 1][1] === end[1]
     ) {
-      console.log(`You made it in ${currDepth} moves! Here's your path:`);
+      console.log(`You made it in ${path.length - 1} moves! Here's your path:`);
       console.log(path);
       break;
     }
 
     for (const move of possibleMoves(path[path.length - 1])) {
-      if (!visitedSqu.has(move)) {
+      if (!visitedSqu.has(JSON.stringify(move))) {
         queue.push([...path, move]);
-        visitedSqu.add(move);
+        visitedSqu.add(JSON.stringify(move));
       }
     }
   }
+  console.log(visitedSqu);
 }
-
-knightMoves([0, 0], [7, 7]);

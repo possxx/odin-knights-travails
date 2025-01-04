@@ -26,6 +26,9 @@ function possibleMoves(position) {
 function knightMoves(start, end) {
   const queue = [[start]];
   const allPaths = [];
+  const shortestDistances = new Map();
+
+  shortestDistances.set(JSON.stringify(start), 0);
 
   while (queue.length) {
     const path = queue.shift();
@@ -35,10 +38,15 @@ function knightMoves(start, end) {
       path[path.length - 1][1] === end[1]
     ) {
       allPaths.push(path);
+      continue;
     }
 
     for (const move of possibleMoves(path[path.length - 1])) {
-      if (!allPaths.length) {
+      if (
+        shortestDistances.get(JSON.stringify(move)) === path.length - 1 ||
+        shortestDistances.get(JSON.stringify(move)) === undefined
+      ) {
+        shortestDistances.set(JSON.stringify(move), path.length - 1);
         queue.push([...path, move]);
       }
     }
